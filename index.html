@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V2Ray Config Generator</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #121212; color: #e0e0e0; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .container { background: #1e1e1e; padding: 2rem; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.5); width: 90%; max-width: 600px; text-align: center; }
+        h2 { color: #00ff88; margin-bottom: 1.5rem; }
+        .config-box { background: #000; color: #00ff88; padding: 15px; border-radius: 6px; border: 1px solid #333; word-break: break-all; font-family: monospace; font-size: 0.9rem; text-align: left; margin-bottom: 1.5rem; min-height: 50px; }
+        button { background: #00ff88; color: #121212; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        button:hover { background: #00cc6e; transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>VLESS Config</h2>
+    <div id="configDisplay" class="config-box">در حال ساخت کانفیگ...</div>
+    <button onclick="generateConfig()">ساخت UUID جدید</button>
+</div>
+
+<script>
+    // تابع ساخت UUID استاندارد
+    function generateUUID() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
+    function generateConfig() {
+        const uuid = generateUUID();
+        const server = "62.60.212.140"; // آدرس سرور خارج خود را اینجا وارد کنید
+        const port = "443";
+        const path = "/graphql"; // مسیر مورد نظر شما
+        const sni = "62.60.212.140"; // SNI معمولا همان دامنه سرور است
+        
+        const vlessLink = `vless://${uuid}@${server}:${port}?encryption=none&security=tls&type=ws&host=${sni}&path=${encodeURIComponent(path)}#GitHub_Outbound`;
+        
+        document.getElementById('configDisplay').innerText = vlessLink;
+    }
+
+    // اجرای خودکار هنگام باز شدن صفحه
+    window.onload = generateConfig;
+</script>
+
+</body>
+</html>
